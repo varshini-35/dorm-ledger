@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dorm Ledger | Complaints</title>
+  <link rel="stylesheet" href="complaints.css" />
+</head>
+<body>
+
+<div class="page">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+     <h1 class="sidebar-logo">Dorm<br>Ledger</h1>
+
+    <ul class="sidebar-menu">
+      <li><a href="/student/dashboard.html">🏠 Main Menu</a></li>
+      <li><a href="/student/fee.html">💰 Fee Details</a></li>
+      <li class="active"><a href="/student/complaints.html">📄 Complaints</a></li>
+      <li><a href="/student/notices.html">📢 Notices</a></li>
+    </ul>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- SUMMARY -->
+    <div class="summary">
+      <div class="summary-card">
+        <h3>Total</h3>
+        <p id="totalCount">2</p>
+      </div>
+      <div class="summary-card pending">
+        <h3>Pending</h3>
+        <p id="pendingCount">2</p>
+      </div>
+      <div class="summary-card resolved">
+        <h3>Resolved</h3>
+        <p id="resolvedCount">0</p>
+      </div>
+    </div>
+
+    <!-- RAISE COMPLAINT -->
+    <div class="card">
+      <h2>Raise a Complaint</h2>
+
+      <div class="form-group">
+        <label>Category</label>
+        <select id="category">
+          <option value="">Select category</option>
+          <option>Electrical</option>
+          <option>Plumbing</option>
+          <option>Cleaning</option>
+          <option>Internet</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="description" placeholder="Describe your issue"></textarea>
+      </div>
+
+      <button class="submit-btn" onclick="submitComplaint()">Submit Complaint</button>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="card">
+      <h2>Complaint History</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="complaintTable">
+          <tr>
+            <td>12/03/26</td>
+            <td>Electrical</td>
+            <td>Fan not working</td>
+            <td><span class="badge pending">Pending</span></td>
+          </tr>
+          <tr>
+            <td>10/03/26</td>
+            <td>Cleaning</td>
+            <td>Washroom not cleaned</td>
+            <td><span class="badge pending">Pending</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast hidden">✅ Complaint submitted successfully</div>
+
+<script src="complaints.js"></script>
+</body>
+</html>

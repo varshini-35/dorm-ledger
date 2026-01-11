@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dorm Ledger | Complaints</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="complaints.css">
+</head>
+<body>
+
+<div class="page">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h1 class="logo">Dorm<br>Ledger</h1>
+    <ul class="sidebar-menu">
+      <li><a href="/admin/dashboard.html">📊 Dashboard</a></li>
+      <li><a href="/admin/tenants.html">👥 Tenants</a></li>
+      <li><a href="/admin/attendance.html">📋 Attendance</a></li>
+      <li class="active"><a href="/admin/complaints.html">🛠 Complaints</a></li>
+      <li><a href="/admin/mess.html">🍽 Mess</a></li>
+      <li><a href="/admin/notices.html">📢 Notices</a></li>
+
+    </ul>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <h2>Complaints</h2>
+      <div class="admin-profile"></div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary">
+      <div class="summary-card blue">
+        <div class="summary-icon">📋</div>
+        <div>
+          <span>Total Complaints</span>
+          <h3 id="totalCount">0</h3>
+        </div>
+      </div>
+
+      <div class="summary-card orange">
+        <div class="summary-icon">⏳</div>
+        <div>
+          <span>Pending</span>
+          <h3 id="pendingCount">0</h3>
+        </div>
+      </div>
+
+      <div class="summary-card green">
+        <div class="summary-icon">✅</div>
+        <div>
+          <span>Resolved</span>
+          <h3 id="resolvedCount">0</h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILTER -->
+    <div class="complaint-filter">
+      <select id="statusFilter">
+        <option value="all">All</option>
+        <option value="pending">Pending</option>
+        <option value="resolved">Resolved</option>
+      </select>
+    </div>
+
+    <!-- TABLE -->
+    <div class="box">
+      <table>
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Room</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody id="complaintTable">
+          <tr data-status="pending">
+            <td>Rahul Kumar</td>
+            <td>301</td>
+            <td>Plumbing</td>
+            <td>Water leakage in bathroom</td>
+            <td><span class="badge pending">Pending</span></td>
+            <td><button class="resolve-btn">Resolve</button></td>
+          </tr>
+
+          <tr data-status="resolved">
+            <td>Ananya S</td>
+            <td>214</td>
+            <td>Electrical</td>
+            <td>Fan not working</td>
+            <td><span class="badge resolved">Resolved</span></td>
+            <td>-</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+</div>
+
+<script src="complaints.js"></script>
+</body>
+</html>

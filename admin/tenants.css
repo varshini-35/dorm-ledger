@@ -1,0 +1,62 @@
+/* Filter section */
+.tenant-filter {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.tenant-filter input,
+.tenant-filter select {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  outline: none;
+}
+
+/* View button */
+.view-btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: none;
+  background: #0a2a4f;
+  color: white;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.view-btn:hover {
+  background: #061a2f;
+}
+
+/* TENANTS SUMMARY ICON STYLE */
+.summary-icon {
+  font-size: 28px;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.summary-card span {
+  font-size: 14px;
+  color: #555;
+  font-weight: 500;
+}
+
+.summary-card h3 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.summary-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}

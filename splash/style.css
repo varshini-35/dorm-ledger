@@ -1,0 +1,107 @@
+body {
+  margin: 0;
+  height: 100vh;
+  background: radial-gradient(circle at top, #132b46, #0A1A2F);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.splash {
+  text-align: center;
+}
+
+.logo-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  margin-bottom: 6px; /* tighter, logo-accurate */
+}
+
+.logo-svg {
+  width: 200px; /* closer to real logo proportion */
+}
+
+
+/* Ledger lines */
+#lines line {
+  stroke: white;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  transform-origin: center;
+  animation: linesIn 1.6s ease forwards;
+}
+
+@keyframes linesIn {
+  from {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Golden spine animation */
+#gold-main,
+#gold-thin {
+  opacity: 0;
+  transform: scaleY(0);
+  transform-origin: top;
+  animation: goldPop 0.8s ease forwards;
+}
+
+/* Slight delay for natural feel */
+#gold-thin {
+  animation-delay: 0.15s;
+}
+
+@keyframes goldPop {
+  from {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+
+/* D outline */
+#d-outline {
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+  animation: drawD 1.2s ease forwards;
+  animation-delay: 1.4s;
+}
+
+@keyframes drawD {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+#orm {
+  font-size: 50px;
+  letter-spacing: 3px;
+  font-weight: 500;
+  color: white;
+  opacity: 0;
+}
+
+#orm {
+  margin-left: -6px; /* pulls ORM towards D */
+}
+
+#ledger {
+  margin-top: -25px;
+  font-size: 62px;
+  letter-spacing: 6px;
+  font-weight: 500;
+  color: white;
+  opacity: 0;
+}

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dorm Ledger</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="splash">
+
+  <!-- D + ORM -->
+  <div class="logo-row">
+
+    <!-- SVG LOGO -->
+     <svg class="logo-svg" viewBox="20 0 160 220">
+      <!-- Gold spines -->
+
+      <rect id="gold-main" x="26" y="40" width="10" height="140" rx="4" fill="#D4AF37"/>
+      <rect id="gold-thin" x="38" y="40" width="10" height="140" rx="2" fill="#C9A23A"/>
+
+      <!-- D CLIP -->
+      <defs>
+        <clipPath id="dClip">
+          <path d="
+            M55 40
+            L100 40
+            Q160 40 160 110
+            Q160 180 100 180
+            L55 180
+            Z
+          "/>
+        </clipPath>
+      </defs>
+
+      <!-- Ledger lines (uneven like logo) -->
+      <g clip-path="url(#dClip)" id="lines">
+        <line x1="65" y1="85"  x2="150" y2="85"/>
+        <line x1="65" y1="100" x2="150" y2="100"/>
+        <line x1="65" y1="115" x2="150" y2="115"/>
+        <line x1="65" y1="135" x2="150" y2="135"/>
+      </g>
+
+      <!-- Small connector icon -->
+      <g id="connector" transform="translate(90 60)">
+        <rect x="0" y="0" width="18" height="12" rx="2" fill="none" stroke="white" stroke-width="2"/>
+        <line x1="18" y1="6" x2="30" y2="6" stroke="white" stroke-width="2"/>
+        <line x1="30" y1="4" x2="36" y2="4" stroke="white" stroke-width="2"/>
+        <line x1="30" y1="8" x2="36" y2="8" stroke="white" stroke-width="2"/>
+      </g>
+
+      <!-- D outline -->
+      <path
+        d="
+          M55 40
+          L100 40
+          Q160 40 160 110
+          Q160 180 100 180
+          L55 180
+          Z
+        "
+        fill="none"
+        stroke="white"
+        stroke-width="6"
+        id="d-outline"
+      />
+
+    </svg>
+
+    <!-- ORM -->
+    <span id="orm"></span>
+
+  </div>
+
+  <!-- LEDGER -->
+  <div id="ledger"></div>
+
+</div>
+
+<script>
+  // Redirect to login after 2.5 seconds
+  setTimeout(() => {
+    window.location.href = "/login/login.html";
+  }, 5400);
+</script>
+
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+textarea {
+  resize: none;
+  height: 90px;
+}
+
+.primary-btn {
+  padding: 12px 20px;
+  background: #0a2a4f;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.primary-btn:hover {
+  background: #061a2f;
+}
+
+.hidden {
+  display: none;
+}
+
+.badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge.important {
+  background: #ffe0e0;
+  color: #c0392b;
+}
+
+.badge.normal {
+  background: #e3f4ff;
+  color: #0a2a4f;
+}
+
+/* Reduce gap between topbar and blocks in Notices page */
+.topbar {
+  margin-bottom: -5px !important;
+}
+
+.summary,
+.cards {
+  margin-top: 1px !important;
+}
+
+.main {
+  gap: 12px;
+}

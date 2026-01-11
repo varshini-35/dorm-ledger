@@ -1,0 +1,24 @@
+.complaint-filter {
+  margin-bottom: 16px;
+}
+
+.complaint-filter select {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.resolve-btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: none;
+  background: #0a2a4f;
+  color: white;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.resolve-btn:hover {
+  background: #061a2f;
+}

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dorm Ledger | Attendance</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="attendance.css">
+</head>
+<body>
+
+<div class="page">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h1 class="logo">Dorm<br>Ledger</h1>
+    <ul class="sidebar-menu">
+      <li><a href="/admin/dashboard.html">📊 Dashboard</a></li>
+      <li><a href="/admin/tenants.html">👥 Tenants</a></li>
+      <li class="active"><a href="/admin/attendance.html">📋 Attendance</a></li>
+      <li><a href="/admin/complaints.html">🛠 Complaints</a>
+      </li><li><a href="/admin/mess.html">🍽 Mess</a></li>
+      <li><a href="/admin/notices.html">📢 Notices</a></li>
+
+    </ul>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <h2>Attendance</h2>
+      <div class="admin-profile"></div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary">
+      <div class="summary-card blue">
+        <div class="summary-icon">👥</div>
+        <div>
+          <span>Total Students</span>
+          <h3 id="totalCount">0</h3>
+        </div>
+      </div>
+
+      <div class="summary-card green">
+        <div class="summary-icon">🟢</div>
+        <div>
+          <span>Currently IN</span>
+          <h3 id="inCount">0</h3>
+        </div>
+      </div>
+
+      <div class="summary-card orange">
+        <div class="summary-icon">🔴</div>
+        <div>
+          <span>Currently OUT</span>
+          <h3 id="outCount">0</h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILTER -->
+    <div class="attendance-filter">
+      <select id="statusFilter">
+        <option value="all">All</option>
+        <option value="in">IN</option>
+        <option value="out">OUT</option>
+      </select>
+    </div>
+
+    <!-- TABLE -->
+    <div class="box">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>USN</th>
+            <th>Room</th>
+            <th>Status</th>
+            <th>Last Updated</th>
+          </tr>
+        </thead>
+
+        <tbody id="attendanceTable">
+          <tr data-status="in">
+            <td>Rahul Kumar</td>
+            <td>1RV21CS045</td>
+            <td>301</td>
+            <td class="in">IN</td>
+            <td>10:30 AM</td>
+          </tr>
+
+          <tr data-status="out">
+            <td>Ananya S</td>
+            <td>1RV21CS067</td>
+            <td>214</td>
+            <td class="out">OUT</td>
+            <td>09:15 AM</td>
+          </tr>
+
+          <tr data-status="in">
+            <td>Karthik R</td>
+            <td>1RV21CS082</td>
+            <td>109</td>
+            <td class="in">IN</td>
+            <td>11:00 AM</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+</div>
+
+<script src="attendance.js"></script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #eef1f5;
+}
+
+/* PAGE */
+.page {
+  display: flex;
+  height: 100vh;
+  padding: 16px;
+  gap: 16px;
+}
+
+/* ================= SIDEBAR (SAME AS DASHBOARD) ================= */
+.sidebar {
+  width: 240px;
+  background: linear-gradient(180deg, #061a2f, #0a2a4f);
+  color: white;
+  border-radius: 20px;
+  padding: 24px;
+}
+
+.logo {
+  font-size: 34px;
+  margin-bottom: 40px;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar li {
+  margin-bottom: 12px;
+}
+
+.sidebar a {
+  text-decoration: none;
+  color: white;
+  padding: 14px;
+  display: block;
+  border-radius: 12px;
+}
+
+.sidebar li.active a,
+.sidebar a:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+/* ================= MAIN ================= */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ================= TOP BAR ================= */
+.topbar {
+  background: white;
+  padding: 14px 20px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.topbar h2 {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* ================= LEFT CONTENT AREA ================= */
+.left-stack {
+  min-height: calc(100vh - 150px); /* Matches dashboard feel */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ================= SUMMARY CARDS ================= */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  text-align: center;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card p {
+  font-size: 26px;
+  font-weight: 600;
+}
+
+/* ================= ML + ALERT ROW ================= */
+.ml-alert-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+}
+
+/* ML CARD */
+.ml-card {
+  background: #eaf6ff;
+  padding: 20px;
+  border-radius: 16px;
+}
+
+/* ALERT CARD */
+.alert-card {
+  background: #fff3cd;
+  padding: 20px;
+  border-radius: 16px;
+}
+
+.alert-card ul {
+  margin-top: 10px;
+  padding-left: 20px;
+}
+
+/* ================= CHART ================= */
+.chart-card {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+}
+
+.chart-card canvas {
+  max-height: 260px; /* Fits screen cleanly */
+}

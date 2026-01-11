@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dorm Ledger | Notices</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="notices.css">
+</head>
+<body>
+
+<div class="page">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h1 class="logo">Dorm<br>Ledger</h1>
+    <ul class="sidebar-menu">
+      <li><a href="/admin/dashboard.html">📊 Dashboard</a></li>
+      <li><a href="/admin/tenants.html">👥 Tenants</a></li>
+      <li><a href="/admin/attendance.html">📋 Attendance</a></li>
+      <li><a href="/admin/complaints.html">🛠 Complaints</a></li>
+      <li><a href="/admin/mess.html">🍽 Mess</a></li>
+      <li class="active"><a href="/admin/notices.html">📢 Notices</a></li>
+    </ul>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <h2>Notices</h2>
+      <div class="admin-profile"></div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary">
+      <div class="summary-card blue">
+        <span>Total Notices</span>
+        <h3 id="totalCount">0</h3>
+      </div>
+
+      <div class="summary-card orange">
+        <span>Important</span>
+        <h3 id="importantCount">0</h3>
+      </div>
+
+      <div class="summary-card green">
+        <span>Active</span>
+        <h3 id="activeCount">0</h3>
+      </div>
+    </div>
+
+    <!-- NEW NOTICE -->
+    <div class="box">
+      <h3>📢 New Notice</h3>
+
+      <div class="form-group">
+        <label>Title</label>
+        <input type="text" id="title" placeholder="Enter notice title">
+      </div>
+
+      <div class="form-group">
+        <label>Message</label>
+        <textarea id="message" placeholder="Enter notice message"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Priority</label>
+          <select id="priority">
+            <option value="normal">Normal</option>
+            <option value="important">Important</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Send To</label>
+          <select id="audience" onchange="toggleTarget()">
+            <option value="all">All Tenants</option>
+            <option value="specific">Specific Tenant</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="targetFields" class="form-row hidden">
+        <div class="form-group">
+          <label>USN</label>
+          <input type="text" id="usn" placeholder="Enter USN">
+        </div>
+
+        <div class="form-group">
+          <label>Room No</label>
+          <input type="text" id="room" placeholder="Enter Room No">
+        </div>
+      </div>
+
+      <button class="primary-btn" onclick="postNotice()">Post Notice</button>
+    </div>
+
+    <!-- NOTICE HISTORY -->
+    <div class="box">
+      <h3>Notice History</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Priority</th>
+            <th>Sent To</th>
+            <th>Posted By</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="noticeTable"></tbody>
+      </table>
+    </div>
+
+  </main>
+</div>
+
+<script src="notices.js"></script>
+</body>
+</html>

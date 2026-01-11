@@ -1,0 +1,292 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #eef1f5;
+}
+
+.page {
+  display: flex;
+  height: 100vh;
+  padding: 16px;
+  gap: 16px;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 240px;
+  background: linear-gradient(180deg, #061a2f, #0a2a4f);
+  color: white;
+  border-radius: 20px;
+  padding: 24px;
+}
+
+.logo {
+  font-size: 34px;
+  margin-bottom: 40px;
+}
+
+.sidebar-menu li {
+  list-style: none;
+  margin-bottom: 12px;
+}
+
+.sidebar-menu a {
+  display: block;
+  padding: 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: white;
+}
+
+.sidebar-menu li.active a,
+.sidebar-menu a:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+/* MAIN */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* TOP BAR */
+.topbar {
+  background: white;
+  padding: 14px 20px;
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* TOP GRID */
+.top-grid {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 16px;
+}
+
+/* LEFT STACK */
+.left-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* SUMMARY (ONLY ONE DEFINITION) */
+.summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 12px;
+}
+
+/* SUMMARY CARD */
+.summary-card {
+  padding: 18px;
+  border-radius: 16px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+/* ICON */
+.icon-box {
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.5);
+}
+
+.summary-card span {
+  font-size: 14px;
+}
+
+.summary-card h3 {
+  font-size: 22px;
+}
+
+/* COLORS */
+.blue { background: #e3f4ff; }
+.green { background: #eafadf; }
+.purple { background: #eee6ff; }
+.orange { background: #fff0da; }
+
+/* INSIGHT CARDS */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.card {
+  padding: 18px;
+  border-radius: 16px;
+}
+
+/* 🔥 MAKE ALL 6 BLOCKS SAME SIZE */
+.summary-card,
+.cards .card {
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+}
+
+/* ALIGN CONTENT CENTER */
+.summary-card > div,
+.cards .card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.big {
+  font-size: 26px;
+  font-weight: bold;
+}
+
+.note {
+  font-size: 12px;
+}
+
+/* RENT */
+.rent-card {
+  background: white;
+  border-radius: 16px;
+  padding: 18px;
+  text-align: center;
+}
+
+.rent-circle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: conic-gradient(#9acd32 65%, #c48ddc 0);
+  margin: 16px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rent-inner {
+  width: 90px;
+  height: 90px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* LOWER GRID */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.box {
+  background: white;
+  border-radius: 16px;
+  padding: 18px;
+}
+
+/* TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+/* PROFILE BOX */
+.admin-profile {
+  cursor: pointer;
+}
+
+.profile-box {
+  position: absolute;
+  top: 80px;
+  right: 40px;
+  background: #ffffff;
+  width: 240px;
+  padding: 16px;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.profile-box p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.profile-box p strong {
+  font-size: 24px;
+  color: #0A1A2F;
+}
+
+.profile-box hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 12px 0;
+}
+
+.profile-box button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #ffeaea;
+  color: #c0392b;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.profile-box button:hover {
+  background: #c0392b;
+  color: white;
+}
+
+.hidden {
+  display: none;
+}
+
+/* BADGES */
+.badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.pending { background: #ffe0b2; }
+.resolved { background: #c8e6c9; }
+
+.in { color: green; font-weight: bold; }
+.out { color: red; font-weight: bold; }
+
+/* ANIMATION */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

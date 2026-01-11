@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dorm Ledger | Fee Details</title>
+
+  <!-- FEE CSS -->
+  <link rel="stylesheet" href="fee.css">
+</head>
+<body>
+<div class="page">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+   <h1 class="sidebar-logo">Dorm<br>Ledger</h1>
+  
+    <ul class="sidebar-menu">
+  <li>
+    <a href="/student/dashboard.html">🏠 Main Menu</a>
+  </li>
+
+  <li class="active">
+    <a href="/student/fee.html">💰 Fee Details</a>
+  </li>
+
+  <li>
+    <a href="/student/complaints.html">📄 Complaints</a>
+  </li>
+
+  <li>
+    <a href="/student/notices.html">📢 Notices</a>
+  </li>
+</ul>
+
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <section class="main">
+    <!-- ROOM TYPE -->
+<div class="card room-type-card">
+  <p class="room-type-text">
+    <strong>Room Type:</strong> <span id="roomType">3-Sharing</span>
+  </p>
+</div>
+
+<!-- MIDDLE BLOCK -->
+<div class="fee-middle">
+
+  <!-- LEFT: FEE STRUCTURE -->
+  <div class="card fee-structure">
+    <h3>Fee Structure</h3>
+    <p>Maintenance: ₹10,000</p>
+    <p>Rent: ₹40,000</p>
+    <p>Mess: ₹20,000</p>
+  </div>
+
+  <!-- RIGHT: STUDENT FEE SUMMARY -->
+  <div class="card fee-summary">
+    <h3>Fee Summary</h3>
+    <p>Total Fee: ₹70,000</p>
+    <p>Paid: ₹50,000</p>
+    <p>Due: ₹20,000</p>
+  </div>
+
+</div>
+
+<!-- TRANSACTION HISTORY -->
+<div class="card transaction-history">
+  <h3>Transaction History</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Amount</th>
+        <th>Mode</th>
+        <th>Reference</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>12-02-24</td>
+        <td>₹30,000</td>
+        <td>UPI</td>
+        <td>TXN123</td>
+      </tr>
+      <tr>
+        <td>10-08-23</td>
+        <td>₹20,000</td>
+        <td>Cash</td>
+        <td>Office</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Fee Payment Section -->
+<div class="card fee-payment">
+ <button class="pay-btn" onclick="alert('Redirecting to payment gateway')">
+  Pay Fee
+</button>
+
+</div>
+  </section>
+
+</div>
+
+<script src="fee.js"></script>
+</body>
+</html>

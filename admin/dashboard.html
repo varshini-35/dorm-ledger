@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dorm Ledger | Admin Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+<div class="page">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h1 class="logo">Dorm<br>Ledger</h1>
+
+    <ul class="sidebar-menu">
+      <li class="active"><a href="/admin/dashboard.html">📊 Dashboard</a></li>
+      <li><a href="/admin/tenants.html">👥 Tenants</a></li>
+      <li><a href="/admin/attendance.html">📋 Attendance</a></li>
+      <li><a href="/admin/complaints.html">🛠 Complaints</a></li>
+     <li><a href="/admin/mess.html">🍽 Mess</a></li>
+    <li><a href="/admin/notices.html">📢 Notices</a></li>
+
+    </ul>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <h2>Admin Dashboard</h2>
+
+  <div class="admin-profile" onclick="toggleProfile(event)">
+    👤
+  </div>
+</div>
+
+<!-- PROFILE DROPDOWN (keep OUTSIDE topbar if possible) -->
+<div id="profileBox" class="profile-box hidden" onclick="event.stopPropagation()">
+  <p><strong id="pName"></strong></p>
+  <p id="pRole"></p>
+  <p id="pEmail"></p>
+  <button onclick="logout()">Logout</button>
+</div>
+
+    
+
+    <!-- ================= TOP GRID ================= -->
+    <div class="top-grid">
+
+      <!-- LEFT SIDE (6 BLOCKS) -->
+      <div class="left-stack">
+
+        <!-- SUMMARY ROW -->
+        <div class="summary">
+          <div class="summary-card blue">
+            <div class="icon-box">🏠</div>
+            <div>
+              <span>Vacant Rooms</span>
+              <h3>11/40</h3>
+            </div>
+          </div>
+
+          <div class="summary-card green">
+            <div class="icon-box">🎧</div>
+            <div>
+              <span>Received Complaints</span>
+              <h3>55/160</h3>
+            </div>
+          </div>
+
+          <div class="summary-card purple">
+            <div class="icon-box">👥</div>
+            <div>
+              <span>Total Tenants</span>
+              <h3>80/160</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- INSIGHT ROW -->
+        <div class="cards">
+          <div class="card green">
+  <h3>Expected <span id="dashMealName"></span> Turnout</h3>
+  <p class="big">
+    <span id="dashTurnout"></span> Students
+  </p>
+  <span class="note">ML Prediction</span>
+</div>
+
+
+          <div class="card blue">
+            <h3>Estimated Food Reduction</h3>
+            <p class="big">18.6 kg</p>
+            <span class="note">This Week</span>
+          </div>
+
+          <div class="card orange">
+            <h3>High Usage Alert</h3>
+            <p class="big">Block B</p>
+            <span class="note">Water Consumption</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT SIDE (RENT STATUS) -->
+      <div class="rent-card">
+        <h3>Rent Status</h3>
+
+        <div class="rent-circle">
+          <div class="rent-inner">
+            <p>Paid</p>
+            <h4>65%</h4>
+          </div>
+        </div>
+
+        <div class="rent-legend">
+          <span>🟢 Paid</span>
+          <span>🟣 Unpaid</span>
+        </div>
+      </div>
+
+    </div>
+    <!-- =============== END TOP GRID =============== -->
+
+    <!-- ================= LOWER GRID (UNCHANGED) ================= -->
+    <div class="grid">
+
+      <div class="box">
+        <h3>Recent Complaints</h3>
+        <table>
+          <tr><th>Room</th><th>Issue</th><th>Status</th></tr>
+          <tr><td>204</td><td>Water Leakage</td><td><span class="badge pending">Pending</span></td></tr>
+          <tr><td>118</td><td>Fan Repair</td><td><span class="badge resolved">Resolved</span></td></tr>
+        </table>
+      </div>
+
+      <div class="box">
+        <h3>Live Attendance</h3>
+        <table>
+          <tr><th>Name</th><th>Room</th><th>Status</th></tr>
+          <tr><td>Rahul</td><td>301</td><td class="in">IN</td></tr>
+          <tr><td>Meena</td><td>109</td><td class="out">OUT</td></tr>
+        </table>
+      </div>
+
+    </div>
+    <!-- ================= END LOWER GRID ================= -->
+
+  </main>
+</div>
+<script src="dashboard.js"></script>
+</body>
+</html>
