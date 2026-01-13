@@ -1,4 +1,3 @@
-// src/index.js
 const express = require("express");
 const cors = require("cors");
 const admin = require("firebase-admin");
@@ -10,11 +9,9 @@ app.use(express.json());
 
 // ---------------- Firebase Admin Init ----------------
 const serviceAccount = require(path.join(__dirname, "../serviceAccountKey.json"));
-
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
-
 const db = admin.firestore();
 
 // ---------------- ADMIN LOGIN API ----------------
@@ -30,7 +27,6 @@ app.post("/auth/admin/login", async (req, res) => {
   }
 });
 
-// ---------------- ADMIN VERIFY TOKEN ----------------
 app.post("/auth/admin/verify", async (req, res) => {
   const { token } = req.body;
   if (!token) return res.status(400).json({ success: false, message: "Token required" });
@@ -47,6 +43,69 @@ app.post("/auth/admin/verify", async (req, res) => {
   }
 });
 
+// ---------------- STUDENT INFO ----------------
+app.get("/users/:usn", async (req, res) => {
+  const usn = req.params.usn.trim().toUpperCase();
+
+  try {
+    const snapshot = await db
+      .collection("users")
+      .where("usn", "==", usn)
+      .limit(1)
+      .get();
+
+    if (snapshot.empty) {
+      return res.status(404).json({
+        success: false,
+        message: "Student not found"
+      });
+    }
+
+    const doc = snapshot.docs[0];
+    const data = doc.data();
+
+    return res.json({
+      success: true,
+      student: {
+        id: doc.id,
+        name: data.name,
+        usn: data.usn,
+        room: data.room,
+        phone: data.phone,
+        password: data.password // needed for login
+      }
+    });
+
+  } catch (err) {
+    console.error("Fetch student error:", err);
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+});
+
+
+// Add a student
+app.post("/users", async (req, res) => {
+  const { studentId, name, usn, room, phone, password } = req.body;
+  if (!studentId || !name || !usn || !room || !phone || !password) {
+    return res.status(400).json({ success: false, message: "All fields are required" });
+  }
+
+  try {
+    const docRef = db.collection("users").doc(studentId);
+    await docRef.set({ studentId, name, usn: usn.toUpperCase(), room, phone, password });
+    res.json({ success: true, studentId });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Failed to add student" });
+  }
+});
+
+// ---------------- OTHER APIs ----------------
+// DORM, ROOMS, Electricity, Water, Meals, Ledger, Dashboard remain unchanged
+// Copy everything from your existing index.js here for other routes
 // ---------------- DORM APIs ----------------
 app.post("/dorms", async (req, res) => {
   const { name, totalRooms, floors } = req.body;
@@ -158,21 +217,35 @@ app.get("/water/usage", async (req, res) => {
 
 // ---------------- MEAL ATTENDANCE ----------------
 app.post("/meals/attendance", async (req, res) => {
-  const { studentId, breakfast, lunch, dinner, date } = req.body;
+  const { usn, breakfast, lunch, dinner, date } = req.body;
 
-  // Basic validation
-  if (!studentId || !date) {
+  if (!usn || !date) {
     return res.status(400).json({
       success: false,
-      message: "studentId and date are required"
+      message: "usn and date are required"
     });
   }
 
   try {
-    const db = admin.firestore();
+    // 🔍 Find student by USN
+    const userSnap = await db
+      .collection("users")
+      .where("usn", "==", usn.toUpperCase())
+      .limit(1)
+      .get();
+
+    if (userSnap.empty) {
+      return res.status(404).json({
+        success: false,
+        message: "Student not found"
+      });
+    }
+
+    const studentDoc = userSnap.docs[0];
 
     const mealData = {
-      studentId,
+      studentId: studentDoc.id,   // ✅ correct reference
+      usn: usn.toUpperCase(),     // ✅ useful for ML/debug
       breakfast: !!breakfast,
       lunch: !!lunch,
       dinner: !!dinner,
@@ -196,258 +269,7 @@ app.post("/meals/attendance", async (req, res) => {
     });
   }
 });
-// ---------------- MEAL SUMMARY (FOR ML) ----------------
-app.get("/meals/summary", async (req, res) => {
-  const { date } = req.query;
 
-  if (!date) {
-    return res.status(400).json({
-      success: false,
-      message: "date query parameter is required"
-    });
-  }
-
-  try {
-    const db = admin.firestore();
-    const snapshot = await db
-      .collection("mealResponses")
-      .where("date", "==", date)
-      .get();
-
-    let breakfastCount = 0;
-    let lunchCount = 0;
-    let dinnerCount = 0;
-
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      if (data.breakfast) breakfastCount++;
-      if (data.lunch) lunchCount++;
-      if (data.dinner) dinnerCount++;
-    });
-
-    return res.json({
-      date,
-      breakfastCount,
-      lunchCount,
-      dinnerCount,
-      totalResponses: snapshot.size
-    });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: "Failed to fetch summary" });
-  }
-});
-// ---------------- MEAL SUMMARY (FOR ML) ----------------
-app.get("/meals/summary", async (req, res) => {
-  const { date } = req.query;
-
-  if (!date) {
-    return res.status(400).json({
-      success: false,
-      message: "date query parameter is required"
-    });
-  }
-
-  try {
-    const db = admin.firestore();
-    const snapshot = await db
-      .collection("mealResponses")
-      .where("date", "==", date)
-      .get();
-
-    let breakfastCount = 0;
-    let lunchCount = 0;
-    let dinnerCount = 0;
-
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      if (data.breakfast) breakfastCount++;
-      if (data.lunch) lunchCount++;
-      if (data.dinner) dinnerCount++;
-    });
-
-    return res.json({
-      date,
-      breakfastCount,
-      lunchCount,
-      dinnerCount,
-      totalResponses: snapshot.size
-    });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: "Failed to fetch summary" });
-  }
-});
-// ---------------- MEAL SUMMARY (FOR ML) ----------------
-app.get("/meals/summary", async (req, res) => {
-  const { date } = req.query;
-
-  if (!date) {
-    return res.status(400).json({
-      success: false,
-      message: "date query parameter is required"
-    });
-  }
-
-  try {
-    const db = admin.firestore();
-    const snapshot = await db
-      .collection("mealResponses")
-      .where("date", "==", date)
-      .get();
-
-    let breakfastCount = 0;
-    let lunchCount = 0;
-    let dinnerCount = 0;
-
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      if (data.breakfast) breakfastCount++;
-      if (data.lunch) lunchCount++;
-      if (data.dinner) dinnerCount++;
-    });
-
-    return res.json({
-      date,
-      breakfastCount,
-      lunchCount,
-      dinnerCount,
-      totalResponses: snapshot.size
-    });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: "Failed to fetch summary" });
-  }
-});
-// ---------------- MEAL SUMMARY (FOR ML) ----------------
-app.get("/meals/summary", async (req, res) => {
-  const { date } = req.query;
-
-  if (!date) {
-    return res.status(400).json({
-      success: false,
-      message: "date query parameter is required"
-    });
-  }
-
-  try {
-    const db = admin.firestore();
-    const snapshot = await db
-      .collection("mealResponses")
-      .where("date", "==", date)
-      .get();
-
-    let breakfastCount = 0;
-    let lunchCount = 0;
-    let dinnerCount = 0;
-
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      if (data.breakfast) breakfastCount++;
-      if (data.lunch) lunchCount++;
-      if (data.dinner) dinnerCount++;
-    });
-
-    return res.json({
-      date,
-      breakfastCount,
-      lunchCount,
-      dinnerCount,
-      totalResponses: snapshot.size
-    });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: "Failed to fetch summary" });
-  }
-});
-// ---------------- MEAL SUMMARY (FOR ML) ----------------
-app.get("/meals/summary", async (req, res) => {
-  const { date } = req.query;
-
-  if (!date) {
-    return res.status(400).json({
-      success: false,
-      message: "date query parameter is required"
-    });
-  }
-
-  try {
-    const db = admin.firestore();
-    const snapshot = await db
-      .collection("mealResponses")
-      .where("date", "==", date)
-      .get();
-
-    let breakfastCount = 0;
-    let lunchCount = 0;
-    let dinnerCount = 0;
-
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      if (data.breakfast) breakfastCount++;
-      if (data.lunch) lunchCount++;
-      if (data.dinner) dinnerCount++;
-    });
-
-    return res.json({
-      date,
-      breakfastCount,
-      lunchCount,
-      dinnerCount,
-      totalResponses: snapshot.size
-    });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: "Failed to fetch summary" });
-  }
-});
-// ---------------- MEAL SUMMARY (FOR ML) ----------------
-app.get("/meals/summary", async (req, res) => {
-  const { date } = req.query;
-
-  if (!date) {
-    return res.status(400).json({
-      success: false,
-      message: "date query parameter is required"
-    });
-  }
-
-  try {
-    const db = admin.firestore();
-    const snapshot = await db
-      .collection("mealResponses")
-      .where("date", "==", date)
-      .get();
-
-    let breakfastCount = 0;
-    let lunchCount = 0;
-    let dinnerCount = 0;
-
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      if (data.breakfast) breakfastCount++;
-      if (data.lunch) lunchCount++;
-      if (data.dinner) dinnerCount++;
-    });
-
-    return res.json({
-      date,
-      breakfastCount,
-      lunchCount,
-      dinnerCount,
-      totalResponses: snapshot.size
-    });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: "Failed to fetch summary" });
-  }
-});
 // ---------------- MEAL SUMMARY (FOR ML) ----------------
 app.get("/meals/summary", async (req, res) => {
   const { date } = req.query;
@@ -585,50 +407,72 @@ app.get("/dashboard/alerts", async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 });
-// ---------------- MEAL SUMMARY (FOR ML) ----------------
-app.get("/meals/summary", async (req, res) => {
-  const { date } = req.query;
 
-  if (!date) {
-    return res.status(400).json({
-      success: false,
-      message: "date query parameter is required"
-    });
-  }
+// Get student info
+app.get("/student/:id", async (req, res) => {
+  const { id } = req.params;
 
   try {
-    const db = admin.firestore();
-    const snapshot = await db
-      .collection("mealResponses")
-      .where("date", "==", date)
-      .get();
+    // TEMP: Fetch from Firestore
+    const doc = await admin.firestore().collection("users").doc(id).get();
 
-    let breakfastCount = 0;
-    let lunchCount = 0;
-    let dinnerCount = 0;
+    if (!doc.exists) {
+      return res.status(404).json({ success: false, message: "Student not found" });
+    }
 
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      if (data.breakfast) breakfastCount++;
-      if (data.lunch) lunchCount++;
-      if (data.dinner) dinnerCount++;
-    });
-
-    return res.json({
-      date,
-      breakfastCount,
-      lunchCount,
-      dinnerCount,
-      totalResponses: snapshot.size
-    });
+    return res.json({ success: true, student: doc.data() });
 
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, message: "Failed to fetch summary" });
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+// ---------------- USER INFO ----------------
+app.get("/users/:usn", async (req, res) => {
+  const usn = req.params.usn.trim().toUpperCase();
+
+  try {
+    const snapshot = await db
+      .collection("users")
+      .where("usn", "==", usn)
+      .limit(1)
+      .get();
+
+    if (snapshot.empty) {
+      return res.status(404).json({
+        success: false,
+        message: "Student not found"
+      });
+    }
+
+    const doc = snapshot.docs[0];
+    const data = doc.data();
+
+    return res.json({
+      success: true,
+      student: {
+        id: doc.id,
+        name: data.name,
+        usn: data.usn,
+        room: data.room,
+        phone: data.phone,
+        password: data.password // needed for login
+      }
+    });
+
+  } catch (err) {
+    console.error("Fetch student error:", err);
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
   }
 });
 
-
+// ---------------- ROOT ----------------
+app.get("/", (req, res) => {
+  res.send("Dorm Ledger Backend Running 🚀");
+});
 
 // ---------------- START SERVER ----------------
 const PORT = 5000;
