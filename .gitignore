@@ -6,3 +6,20 @@ serviceAccountKey.json
 
 # Environment variables
 .env
+
+# Node
+node_modules/
+
+# Python
+venv/
+__pycache__/
+
+# Environment files
+.env
+
+# Firebase
+serviceAccountKey.json
+firebase-debug.log
+
+# OS
+.DS_Store
