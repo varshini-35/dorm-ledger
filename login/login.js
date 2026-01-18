@@ -40,7 +40,7 @@ document.querySelector(".login-btn").addEventListener("click", () => {
     // TEMP: frontend auth
     localStorage.setItem("role", "student");
 
-    window.location.href = "/student/dashboard.html";
+    window.location.href = "../student/dashboard.html";
   }
 
   if (selectedRole === "admin") {
@@ -64,6 +64,6 @@ document.querySelector(".login-btn").addEventListener("click", () => {
 
     localStorage.setItem("role", "admin");
 
-    window.location.href = "/admin/dashboard.html";
+    window.location.href = "../admin/dashboard.html";
   }
 });

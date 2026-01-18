@@ -1,4 +1,37 @@
 const ctx = document.getElementById("weeklyChart");
+const API_BASE = "http://localhost:5000";
+
+async function loadMealSummary() {
+  try {
+    console.log("Fetching meal summary...");
+
+    const today = new Date().toISOString().split("T")[0];
+    console.log("Date:", today);
+
+    const res = await fetch(
+      `${API_BASE}/meals/summary?date=${today}`
+    );
+
+    console.log("Response status:", res.status);
+
+    const data = await res.json();
+    console.log("Frontend received:", JSON.stringify(data, null, 2));
+
+
+    const {
+  breakfast,
+  lunch,
+  dinner
+} = data;
+
+document.getElementById("breakfastCount").innerText = breakfast ?? 0;
+document.getElementById("lunchCount").innerText = lunch ?? 0;
+document.getElementById("dinnerCount").innerText = dinner ?? 0;
+  } catch (err) {
+    console.error("Meal summary error:", err);
+  }
+}
+
 
 new Chart(ctx, {
   type: "bar",
@@ -68,4 +101,7 @@ document.getElementById("mlQuantity").innerText =
 document.getElementById("mlReduction").innerText =
   mlPrediction[currentMeal].reduction;
 
+document.addEventListener("DOMContentLoaded", () => {
+  loadMealSummary();
+});
 
