@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Dorm Ledger | Tenants</title>
+  <title>Dorm Ledger | Students</title>
 
   <!-- Reuse existing admin styles -->
   <link rel="stylesheet" href="dashboard.css">
-  <link rel="stylesheet" href="tenants.css">
+  <link rel="stylesheet" href="students.css">
 </head>
 <body>
 
@@ -18,7 +18,7 @@
 
     <ul class="sidebar-menu">
       <li><a href="/admin/dashboard.html">📊 Dashboard</a></li>
-      <li class="active"><a href="/admin/tenants.html">👥 Tenants</a></li>
+      <li class="active"><a href="/admin/students.html">👥 Students</a></li>
       <li><a href="/admin/attendance.html">📋 Attendance</a></li>
       <li><a href="/admin/complaints.html">🛠 Complaints</a></li>
       <li><a href="/admin/mess.html">🍽 Mess</a></li>
@@ -32,17 +32,17 @@
 
     <!-- TOP BAR -->
     <div class="topbar">
-      <h2>Tenants</h2>
+      <h2>Students</h2>
       <div class="admin-profile"></div>
     </div>
      
-   <!-- TENANTS SUMMARY -->
+   <!-- students SUMMARY -->
 <div class="summary">
 
   <div class="summary-card blue">
     <div class="summary-icon">👥</div>
     <div>
-      <span>Total Tenants</span>
+      <span>Total Students</span>
       <h3 id="totalCount">0</h3>
     </div>
   </div>
@@ -76,7 +76,7 @@
       </select>
     </div>
 
-    <!-- TENANTS TABLE -->
+    <!-- students TABLE -->
     <div class="box">
       <table>
         <thead>
@@ -127,6 +127,6 @@
 
   </main>
 </div>
-<script src="tenants.js"></script>
+<script src="students.js"></script>
 </body>
 </html>
