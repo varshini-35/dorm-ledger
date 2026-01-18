@@ -22,7 +22,7 @@ model.fit(X, y)
 def predict():
     data = request.get_json(force=True)
 
-    breakfast = 1 if data.get("breakfast", False) else 0
+    breakfast = 1 if data.gpet("breakfast", False) else 0
     lunch = 1 if data.get("lunch", False) else 0
     dinner = 1 if data.get("dinner", False) else 0
 
