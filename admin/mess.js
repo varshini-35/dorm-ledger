@@ -1,5 +1,5 @@
 const ctx = document.getElementById("weeklyChart");
-const API_BASE = "http://localhost:5000";
+const API_BASE = "https://dorm-ledger.onrender.com";
 
 // Fetch today's meal counts from backend
 async function loadMealSummary() {

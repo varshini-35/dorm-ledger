@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       try {
-        const res = await fetch(`http://localhost:5000/users/${usn}`);
+        const res = await fetch(`https://dorm-ledger.onrender.com/users/${usn}`);
         if (!res.ok) throw new Error("Student not found");
 
         const data = await res.json();
@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       try {
-        const res = await fetch("http://localhost:5000/auth/admin/login", {
+        const res = await fetch("https://dorm-ledger.onrender.com/auth/admin/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password })
