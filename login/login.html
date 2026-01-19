@@ -18,21 +18,15 @@
 
   <!-- ROLE SELECTION -->
   <div class="role-toggle">
-
     <div class="role active" onclick="switchRole('student', this)">
-      <img 
-        src="https://cdn-icons-png.flaticon.com/512/3135/3135810.png"
-        alt="Student icon">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135810.png" alt="Student icon">
       <span>Student</span>
     </div>
 
-    <div class="role" onclick="switchRole('Admin', this)">
-      <img 
-        src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-        alt="Admin icon">
+    <div class="role" onclick="switchRole('admin', this)">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Admin icon">
       <span>Admin</span>
     </div>
-
   </div>
 
   <!-- LOGIN CARD -->
@@ -40,17 +34,16 @@
 
     <!-- STUDENT LOGIN -->
     <div id="student-login" class="form">
-      <input type="text" placeholder="Phone Number" />
-      <input type="password" placeholder="Password" />
+      <input type="text" id="student-usn" placeholder="USN / Phone Number" />
+      <input type="password" id="student-password" placeholder="Password" />
+      <p class="note">Enter your registered USN</p>
     </div>
 
-    <!-- AdDMIN LOGIN -->
+    <!-- ADMIN LOGIN -->
     <div id="admin-login" class="form hidden">
-      <input type="email" placeholder="College Email ID" />
-      <input type="password" placeholder="Password" />
-      <p class="note">
-        Admin phone login is enabled only after authorization
-      </p>
+      <input type="email" id="admin-email" placeholder="College Email ID" />
+      <input type="password" id="admin-password" placeholder="Password" />
+      <p class="note">Admin login is allowed only after authorization</p>
     </div>
 
     <button class="login-btn">Login</button>

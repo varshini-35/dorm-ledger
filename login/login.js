@@ -1,9 +1,10 @@
-let selectedRole = "student"; // default
+let selectedRole = "student"; // default role
 
 // ================= ROLE SWITCH =================
 function switchRole(role, element) {
   selectedRole = role.toLowerCase();
 
+  // Toggle active tab
   document.querySelectorAll(".role").forEach(r =>
     r.classList.remove("active")
   );
@@ -21,49 +22,84 @@ function switchRole(role, element) {
   );
 }
 
-// ================= LOGIN HANDLER =================
-document.querySelector(".login-btn").addEventListener("click", () => {
-
-  if (selectedRole === "student") {
-    const inputs = document
-      .getElementById("student-login")
-      .querySelectorAll("input");
-
-    const phone = inputs[0].value.trim();
-    const password = inputs[1].value.trim();
-
-    if (!phone || !password) {
-      alert("Please enter phone number and password");
-      return;
-    }
-
-    // TEMP: frontend auth
-    localStorage.setItem("role", "student");
-
-    window.location.href = "/student/dashboard.html";
+// ================= DOM READY =================
+document.addEventListener("DOMContentLoaded", () => {
+  const loginBtn = document.querySelector(".login-btn");
+  if (!loginBtn) {
+    console.error("❌ Login button with class 'login-btn' not found");
+    return;
   }
 
-  if (selectedRole === "admin") {
-    const inputs = document
-      .getElementById("admin-login")
-      .querySelectorAll("input");
+  loginBtn.addEventListener("click", async () => {
 
-    const email = inputs[0].value.trim();
-    const password = inputs[1].value.trim();
+    // ---------- STUDENT LOGIN ----------
+    if (selectedRole === "student") {
+      const usn = document.getElementById("student-usn").value.trim().toUpperCase();
+      const password = document.getElementById("student-password").value.trim();
 
-    if (!email || !password) {
-      alert("Please enter email and password");
-      return;
+      if (!usn || !password) {
+        alert("Please enter USN and password");
+        return;
+      }
+
+      try {
+        const res = await fetch(`http://localhost:5000/users/${usn}`);
+        if (!res.ok) throw new Error("Student not found");
+
+        const data = await res.json();
+
+        if (!data.success || !data.student) {
+          alert("Invalid USN or student not found");
+          return;
+        }
+
+        // Verify password if stored in Firestore
+        if (data.student.password && data.student.password !== password) {
+          alert("Incorrect password");
+          return;
+        }
+
+        // Save logged-in info for dashboard
+        localStorage.setItem("role", "student");
+        localStorage.setItem("loggedInUSN", usn);
+        window.location.href = "../student/dashboard.html";
+
+      } catch (err) {
+        console.error("Student login failed:", err);
+        alert("Login failed. Check USN and password.");
+      }
     }
 
-    // Optional college email check
-    if (!email.includes("@")) {
-      alert("Please enter valid college email ID");
-      return;
+    // ---------- ADMIN LOGIN ----------
+    if (selectedRole === "admin") {
+      const email = document.getElementById("admin-email").value.trim();
+      const password = document.getElementById("admin-password").value.trim();
+
+      if (!email || !password) {
+        alert("Please enter email and password");
+        return;
+      }
+
+      try {
+        const res = await fetch("http://localhost:5000/auth/admin/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          localStorage.setItem("role", "admin");
+          window.location.href = "../admin/dashboard.html";
+        } else {
+          alert("Admin not authorized");
+        }
+
+      } catch (err) {
+        console.error("Backend error:", err);
+        alert("Server error");
+      }
     }
 
-    localStorage.setItem("role", "admin");
-
-    window.location.href = "/admin/dashboard.html";
-  }
+  });
 });

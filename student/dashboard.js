@@ -1,148 +1,10 @@
+const API_BASE = "http://localhost:5000"; // change if deployed
+
 // ==========================
 // GLOBAL STATE
 // ==========================
 let selectedType = "";
-let pendingEntry = null; // 👈 holds data until OK is pressed
-
-
-// ==========================
-// ON PAGE LOAD
-// ==========================
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("gatePass").classList.add("hidden");
-});
-
-// ==========================
-// IN / OUT SELECTION
-// ==========================
-function selectType(type) {
-  selectedType = type;
-
-  document.querySelectorAll(".toggle-btn").forEach(btn => {
-    btn.classList.remove("active");
-  });
-
-  if (type === "IN") {
-    document.querySelector(".toggle-btn.in").classList.add("active");
-  } else {
-    document.querySelector(".toggle-btn.out").classList.add("active");
-  }
-}
-
-// ==========================
-// SUBMIT IN / OUT FORM
-// ==========================
-function submitInOut() {
-  if (!selectedType) {
-    alert("Please select IN or OUT");
-    return;
-  }
-
-  const reason = document.getElementById("reason").value.trim();
-  const time = document.getElementById("time").value;
-
-  if (!reason || !time) {
-    alert("Please fill all fields");
-    return;
-  }
-
-  // Store entry temporarily (NOT adding to history yet)
-  pendingEntry = {
-    type: selectedType,
-    time: time,
-    reason: reason
-  };
-
-  // Generate Gate Pass
-  const passId = "DL-" + selectedType + "-" + Date.now().toString().slice(-6);
-
-  document.getElementById("gpType").innerText = selectedType;
-  document.getElementById("gpTime").innerText = time;
-  document.getElementById("gpReason").innerText = reason;
-  document.getElementById("gpId").innerText = passId;
-
-  document.getElementById("gatePass").classList.remove("hidden");
-}
-
-
-// ==========================
-// RESET FORM (OK BUTTON)
-// ==========================
-function resetInOutForm() {
-  // Add to history ONLY when OK is pressed
-  if (pendingEntry) {
-    addToHistory(
-      pendingEntry.type,
-      pendingEntry.time,
-      pendingEntry.reason
-    );
-  }
-
-  // Show toast
-  showToast();
-
-  // Reset temp data
-  pendingEntry = null;
-  selectedType = "";
-
-  // Reset UI
-  document.getElementById("reason").value = "";
-  document.getElementById("time").value = "";
-
-  document.querySelectorAll(".toggle-btn").forEach(btn => {
-    btn.classList.remove("active");
-  });
-
-  document.getElementById("gatePass").classList.add("hidden");
-}
-
-
-// ==========================
-// TOAST NOTIFICATION
-// ==========================
-function showToast() {
-  const toast = document.getElementById("toast");
-
-  toast.classList.remove("hidden");
-  toast.classList.remove("fade-out");
-
-  setTimeout(() => {
-    toast.classList.add("fade-out");
-  }, 2000);
-
-  setTimeout(() => {
-    toast.classList.add("hidden");
-    toast.classList.remove("fade-out");
-  }, 2600);
-}
-
-// ==========================
-// ADD TO HISTORY TABLE
-// ==========================
-function addToHistory(type, time, reason) {
-  const table = document.getElementById("historyTable");
-
-  const row = document.createElement("tr");
-  const today = new Date().toLocaleDateString("en-GB");
-
-  if (type === "OUT") {
-    row.innerHTML = `
-      <td>${today}</td>
-      <td>${time}</td>
-      <td>--</td>
-      <td>${reason}</td>
-    `;
-  } else {
-    row.innerHTML = `
-      <td>${today}</td>
-      <td>--</td>
-      <td>${time}</td>
-      <td>${reason}</td>
-    `;
-  }
-
-  table.prepend(row);
-}
+let pendingEntry = null;
 
 let mealData = {
   breakfast: null,
@@ -155,8 +17,8 @@ let mealData = {
 // ==========================
 const mealCutOffs = {
   breakfast: "06:30",
-  lunch: "10:30",
-  dinner: "16:00"
+  lunch: "12:30",
+  dinner: "18:30"
 };
 
 function timeToMinutes(time) {
@@ -164,115 +26,276 @@ function timeToMinutes(time) {
   return h * 60 + m;
 }
 
-function isPastFinalCutoff() {
+function getCurrentMinutes() {
   const now = new Date();
-  const currentMinutes = now.getHours() * 60 + now.getMinutes();
-  return currentMinutes > timeToMinutes(mealCutOffs.dinner);
+  return now.getHours() * 60 + now.getMinutes();
 }
 
-function selectMeal(meal, value) {
-  if (isPastFinalCutoff()) {
-    alert("Meal response window closed for today");
+function isMealCutoffPassed(meal) {
+  return getCurrentMinutes() > timeToMinutes(mealCutOffs[meal]);
+}
+
+// ==========================
+// LOAD STUDENT INFO
+// ==========================
+async function loadStudentInfo(usn) {
+  try {
+    const res = await fetch(`${API_BASE}/users/${usn}`);
+
+    if (res.status === 404) {
+      throw new Error("Student not found");
+    }
+
+    if (!res.ok) {
+      throw new Error("Server error");
+    }
+
+    const data = await res.json();
+
+    if (!data.success || !data.student) {
+      throw new Error("Invalid response");
+    }
+
+    const student = data.student;
+
+    document.getElementById("sName").innerText = student.name;
+    document.getElementById("sUSN").innerText = student.usn;
+    document.getElementById("sRoom").innerText = student.room;
+    document.getElementById("sPhone").innerText = student.phone;
+    document.querySelector(".student-name").innerText = student.name;
+
+  } catch (err) {
+    console.error("Load student failed:", err);
+    alert("Session expired. Please login again.");
+    localStorage.clear();
+    window.location.href = "../login/login.html";
+  }
+}
+
+// ==========================
+// CHECK MEAL STATUS (BACKEND)
+// ==========================
+async function checkMealStatus() {
+  const usn = localStorage.getItem("loggedInUSN");
+  const today = new Date().toISOString().split("T")[0];
+
+  try {
+    const res = await fetch(`${API_BASE}/meals/attendance/${usn}/${today}`);
+    const data = await res.json();
+
+    if (data.submitted) {
+      // Meal already submitted → hide form
+      document.getElementById("mealForm").style.display = "none";
+      document.getElementById("mealMessage").classList.remove("hidden");
+    } else {
+      // Show form
+      document.getElementById("mealForm").style.display = "block";
+      document.getElementById("mealMessage").classList.add("hidden");
+      mealData = { breakfast: null, lunch: null, dinner: null };
+    }
+  } catch (err) {
+    console.error("Failed to check meal status", err);
+    // fallback: show form
+    document.getElementById("mealForm").style.display = "block";
+    document.getElementById("mealMessage").classList.add("hidden");
+  }
+}
+
+// ==========================
+// ON PAGE LOAD
+// ==========================
+document.addEventListener("DOMContentLoaded", async () => {
+  document.getElementById("gatePass").classList.add("hidden");
+
+  const loggedInUSN = localStorage.getItem("loggedInUSN");
+  if (!loggedInUSN) {
+    window.location.href = "../login/login.html";
+    return;
+  }
+
+  await loadStudentInfo(loggedInUSN);
+
+  // ✅ Use backend check instead of localStorage
+  await checkMealStatus();
+
+  applyMealCutoffs();
+  setInterval(applyMealCutoffs, 60000); // 🔥 live cutoff enforcement
+});
+
+// ==========================
+// APPLY MEAL CUTOFFS (FIX)
+// ==========================
+function applyMealCutoffs() {
+  ["breakfast", "lunch", "dinner"].forEach(meal => {
+    if (isMealCutoffPassed(meal)) {
+      document
+        .querySelectorAll(`.meal-row[data-meal="${meal}"] .meal-btn`)
+        .forEach(btn => btn.disabled = true);
+    }
+  });
+}
+
+// ==========================
+// IN / OUT SELECTION
+// ==========================
+function selectType(event, type) {
+  selectedType = type;
+  document.querySelectorAll(".toggle-btn").forEach(btn => btn.classList.remove("active"));
+  event.target.classList.add("active");
+}
+
+// ==========================
+// SUBMIT IN / OUT FORM
+// ==========================
+function submitInOut() {
+  if (!selectedType) return alert("Please select IN or OUT");
+
+  const reason = document.getElementById("reason").value.trim();
+  const time = document.getElementById("time").value;
+
+  if (!reason || !time) return alert("Please fill all fields");
+
+  pendingEntry = { type: selectedType, time, reason };
+
+  const passId = "DL-" + selectedType + "-" + Date.now().toString().slice(-6);
+  document.getElementById("gpType").innerText = selectedType;
+  document.getElementById("gpTime").innerText = time;
+  document.getElementById("gpReason").innerText = reason;
+  document.getElementById("gpId").innerText = passId;
+
+  document.getElementById("gatePass").classList.remove("hidden");
+}
+
+// ==========================
+// RESET FORM
+// ==========================
+function resetInOutForm() {
+  if (pendingEntry) addToHistory(pendingEntry.type, pendingEntry.time, pendingEntry.reason);
+  showToast();
+
+  pendingEntry = null;
+  selectedType = "";
+  document.getElementById("reason").value = "";
+  document.getElementById("time").value = "";
+
+  document.querySelectorAll(".toggle-btn").forEach(btn => btn.classList.remove("active"));
+  document.getElementById("gatePass").classList.add("hidden");
+}
+
+// ==========================
+// TOAST
+// ==========================
+function showToast() {
+  const toast = document.getElementById("toast");
+  toast.classList.remove("hidden", "fade-out");
+
+  setTimeout(() => toast.classList.add("fade-out"), 2000);
+  setTimeout(() => toast.classList.add("hidden"), 2600);
+}
+
+// ==========================
+// HISTORY
+// ==========================
+function addToHistory(type, time, reason) {
+  const table = document.getElementById("historyTable");
+  const row = document.createElement("tr");
+  const today = new Date().toLocaleDateString("en-GB");
+
+  if (type === "OUT") {
+    row.innerHTML = `<td>${today}</td><td>${time}</td><td>--</td><td>${reason}</td>`;
+  } else {
+    row.innerHTML = `<td>${today}</td><td>--</td><td>${time}</td><td>${reason}</td>`;
+  }
+
+  table.prepend(row);
+}
+
+// ==========================
+// MEAL SELECTION (FIX)
+// ==========================
+function selectMeal(event, meal, value) {
+  if (isMealCutoffPassed(meal)) {
+    alert(`${meal.toUpperCase()} response window closed`);
     return;
   }
 
   mealData[meal] = value;
 
-  // Highlight selected button
   const row = event.target.closest(".meal-row");
-  row.querySelectorAll(".meal-btn").forEach(btn =>
-    btn.classList.remove("active")
-  );
+  row.querySelectorAll(".meal-btn").forEach(btn => btn.classList.remove("active"));
   event.target.classList.add("active");
 }
 
-
-function submitMeal() {
-  if (
-    mealData.breakfast === null ||
-    mealData.lunch === null ||
-    mealData.dinner === null
-  ) {
-    alert("Please select all meals");
-    return;
-  }
-
-  if (isPastFinalCutoff()) {
-    alert("Meal response window closed for today");
-    return;
-  }
-
-  // Save submission date
-  const today = new Date().toDateString();
-  localStorage.setItem("mealSubmittedDate", today);
-   
-  document.getElementById("mealMessage").classList.remove("cutoff");
-
-  // Hide form, show message
-  document.getElementById("mealForm").style.display = "none";
-  document.getElementById("mealMessage").classList.remove("hidden");
-
-  console.log("Meal submitted:", mealData);
+// ==========================
+// SUBMIT MEAL (FIX)
+// ==========================
+function mapMealValue(value) {
+  if (value === "yes") return true;
+  if (value === "no") return false;
+  return null; // cutoff passed or not answered
 }
 
+async function submitMeal() {
+  // Check if all meals are selected
+  for (const meal of ["breakfast", "lunch", "dinner"]) {
+    if (!isMealCutoffPassed(meal) && mealData[meal] === null) {
+      return alert(`Please select ${meal}`);
+    }
+  }
 
+  const payload = {
+    usn: localStorage.getItem("loggedInUSN"),
+    date: new Date().toISOString().split("T")[0],
+    breakfast: mapMealValue(mealData.breakfast),
+    lunch: mapMealValue(mealData.lunch),
+    dinner: mapMealValue(mealData.dinner)
+  };
 
-document.addEventListener("DOMContentLoaded", () => {
-  const today = new Date().toDateString();
-  const savedDate = localStorage.getItem("mealSubmittedDate");
+  try {
+    const res = await fetch(`${API_BASE}/meals/attendance`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
 
-  if (savedDate === today) {
-    // Already submitted today
+    const data = await res.json();
+
+    if (!res.ok) {
+      if (res.status === 400 && data.message === "Meal already recorded for this date") {
+        alert("You have already submitted meal attendance for today");
+        document.getElementById("mealForm").style.display = "none";
+        document.getElementById("mealMessage").classList.remove("hidden");
+        return;
+      } else {
+        throw new Error(data.message || "Meal submission failed");
+      }
+    }
+
+    // Success
+    await checkMealStatus();
+
     document.getElementById("mealForm").style.display = "none";
     document.getElementById("mealMessage").classList.remove("hidden");
-  } else {
-    // New day → reset meal section
-    document.getElementById("mealForm").style.display = "block";
-    document.getElementById("mealMessage").classList.add("hidden");
 
-    // Reset meal data
-    mealData = {
-      breakfast: null,
-      lunch: null,
-      dinner: null
-    };
+  } catch (err) {
+    console.error(err);
+    alert("Failed to submit meal. Please try again.");
   }
- // Disable meal form after final cut-off
-if (isPastFinalCutoff()) {
-  document.querySelectorAll("#mealForm .meal-btn, #mealForm .submit-btn")
-    .forEach(btn => btn.disabled = true);
-
-  const mealMsg = document.getElementById("mealMessage");
-
-  mealMsg.classList.remove("hidden");
-  mealMsg.classList.add("cutoff");   // ✅ ADD THIS LINE
-
-  mealMsg.innerHTML = `
-    <p class="cutoff-msg">⏰ Meal response window closed for today</p>
-  `;
 }
 
-});
-
-
+// ==========================
+// PROFILE & LOGOUT
+// ==========================
 function toggleStudentProfile(event) {
   event.stopPropagation();
-  const box = document.getElementById("studentProfileBox");
-  box.classList.toggle("hidden");
+  document.getElementById("studentProfileBox").classList.toggle("hidden");
 }
 
-/* Close profile when clicking outside */
 document.addEventListener("click", () => {
   document.getElementById("studentProfileBox").classList.add("hidden");
 });
 
-/* Logout */
 function studentLogout() {
+  localStorage.clear();
   window.location.href = "/login/login.html";
 }
-
-/* (Optional – later backend can fill these dynamically) */
-// document.getElementById("sName").innerText = "Varshini";
-// document.getElementById("sUSN").innerText = "1AB23CS001";
-// document.getElementById("sRoom").innerText = "204";
-// document.getElementById("sPhone").innerText = "9XXXXXXXXX";

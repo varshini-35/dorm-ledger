@@ -15,7 +15,7 @@
     <h1 class="logo">Dorm<br>Ledger</h1>
     <ul>
       <li><a href="dashboard.html">📊 Dashboard</a></li>
-      <li><a href="tenants.html">👥 Tenants</a></li>
+      <li><a href="tenants.html">👥 Students</a></li>
       <li><a href="attendance.html">📋 Attendance</a></li>
       <li><a href="complaints.html">🛠 Complaints</a></li>
       <li class="active"><a href="mess.html">🍽 Mess</a></li>
@@ -32,43 +32,49 @@
 </div>
 
     <!-- MEAL COUNTS -->
+
     <div class="cards">
       <div class="card">
         <h4>🍳 Breakfast</h4>
-        <p>312 Students</p>
+        <h2 id="breakfastCount"></h2>
       </div>
       <div class="card">
         <h4>🍱 Lunch</h4>
-        <p>298 Students</p>
+        <h2 id="lunchCount">298 Students</h2>
       </div>
       <div class="card">
         <h4>🍽 Dinner</h4>
-        <p>285 Students</p>
+        <p id="dinnerCount">285 Students</p>
       </div>
     </div>
 
     <div class="ml-alert-row">
 
-<div class="ml-card">
-  <h3>🤖 ML Prediction</h3>
+    <div class="ml-card">
+  <h3>🤖 ML Prediction – Tomorrow's Meal Turnout</h3>
 
   <p>
-    <strong>Expected <span id="mealName"></span> Turnout:</strong>
-    <span id="mlTurnout"></span> students
+    <strong>Expected Breakfast Turnout:</strong>
+    <span id="mlBreakfastTurnout"></span> students
   </p>
 
   <p>
-    <strong>Estimated Quantity:</strong>
-    <span id="mlQuantity"></span> kg
+    <strong>Expected Lunch Turnout:</strong>
+    <span id="mlLunchTurnout"></span> students
   </p>
 
   <p>
-    <strong>Estimated Food Reduction:</strong>
-    <span id="mlReduction"></span> kg
+    <strong>Expected Dinner Turnout:</strong>
+    <span id="mlDinnerTurnout"></span> students
   </p>
 
   <small>Powered by Linear Regression</small>
 </div>
+
+
+
+
+
 
   <div class="alert-card">
     <h3>⚠ Alerts</h3>

@@ -15,23 +15,19 @@
     
 
     <ul class="sidebar-menu">
-  <li class="active">
-  <a href="/student/dashboard.html">🏠 Main Menu</a>
-</li>
-
-<li>
-  <a href="/student/fee.html">💰 Fee Details</a>
-</li>
-
-
-  <li>
-    <a href="/student/complaints.html">📄 Complaints</a>
-  </li>
-
-  <li>
-    <a href="/student/notices.html">📢 Notices</a>
-  </li>
-</ul>
+      <li class="active">
+        <a href="../student/dashboard.html">🏠 Main Menu</a>
+      </li>
+      <li>
+        <a href="../student/fee.html">💰 Fee Details</a>
+      </li>
+      <li>
+        <a href="../student/complaints.html">📄 Complaints</a>
+      </li>
+      <li>
+        <a href="../student/notices.html">📢 Notices</a>
+      </li>
+    </ul>
   </aside>
 
   <!-- MAIN -->
@@ -51,20 +47,19 @@
 
         <div class="profile-block">
           <!-- PROFILE ICON -->
-<div class="profile-icon" onclick="toggleStudentProfile(event)">
-  👤
-</div>
+          <div class="profile-icon" onclick="toggleStudentProfile(event)">
+            👤
+          </div>
 
-<!-- PROFILE DIALOG -->
-<div id="studentProfileBox" class="profile-dropdown hidden" onclick="event.stopPropagation()">
-  <p><b>Name:</b> <span id="sName">Student Name</span></p>
-  <p><b>USN:</b> <span id="sUSN">1AB23CS001</span></p>
-  <p><b>Room:</b> <span id="sRoom">204</span></p>
-  <p><b>Phone:</b> <span id="sPhone">9XXXXXXXXX</span></p>
-  <hr>
-  <button onclick="studentLogout()">Logout</button>
-</div>
-
+          <!-- PROFILE DIALOG -->
+          <div id="studentProfileBox" class="profile-dropdown hidden" onclick="event.stopPropagation()">
+            <p><b>Name:</b> <span id="sName">Student Name</span></p>
+            <p><b>USN:</b> <span id="sUSN">1AB23CS001</span></p>
+            <p><b>Room:</b> <span id="sRoom">204</span></p>
+            <p><b>Phone:</b> <span id="sPhone">9XXXXXXXXX</span></p>
+            <hr>
+            <button onclick="studentLogout()">Logout</button>
+          </div>
         </div>
       </div>
     </div>
@@ -75,7 +70,6 @@
       <!-- LEFT -->
       <div class="card history-card">
         <h3>Previous History</h3>
-
         <table>
           <thead>
             <tr>
@@ -106,96 +100,79 @@
       <div class="right-column">
 
         <!-- IN / OUT FORM -->
-<div class="card form-card">
-  <h3>In / Out Form</h3>
+        <div class="card form-card">
+          <h3>In / Out Form</h3>
 
-  <div class="toggle-row">
-  <button class="toggle-btn in" onclick="selectType('IN')">IN</button>
-  <button class="toggle-btn out" onclick="selectType('OUT')">OUT</button>
-</div>
+          <div class="toggle-row">
+            <button class="toggle-btn in" onclick="selectType(event,'IN')">IN</button>
+            <button class="toggle-btn out" onclick="selectType(event,'OUT')">OUT</button>
+          </div>
 
-  <div id="formFields">
-    <input type="text" id="reason" placeholder="Reason">
-    <input type="time" id="time">
-    <button class="submit-btn" onclick="submitInOut()">Submit</button>
-  </div>
-</div>
+          <div id="formFields">
+            <input type="text" id="reason" placeholder="Reason">
+            <input type="time" id="time">
+            <button class="submit-btn" onclick="submitInOut()">Submit</button>
+          </div>
+        </div>
 
-<!-- GATE PASS -->
-<div class="card gatepass-card hidden" id="gatePass">
-  <h3>🎫 Digital Gate Pass</h3>
+        <!-- GATE PASS -->
+        <div class="card gatepass-card hidden" id="gatePass">
+          <h3>🎫 Digital Gate Pass</h3>
+          <div class="gatepass-content">
+            <p><strong>Name:</strong> Student Name</p>
+            <p><strong>USN:</strong> 1AB23CS001</p>
+            <p><strong>Room:</strong> 204</p>
+            <p><strong>Status:</strong> <span id="gpType"></span></p>
+            <p><strong>Time:</strong> <span id="gpTime"></span></p>
+            <p><strong>Reason:</strong> <span id="gpReason"></span></p>
+            <p class="pass-id"><strong>Pass ID:</strong> <span id="gpId"></span></p>
+          </div>
+          <p class="gatepass-note">Show this pass to the security</p>
+          <button class="ok-btn" onclick="resetInOutForm()">OK</button>
+        </div>
 
-  <div class="gatepass-content">
-    <p><strong>Name:</strong> Student Name</p>
-    <p><strong>USN:</strong> 1AB23CS001</p>
-    <p><strong>Room:</strong> 204</p>
-    <p><strong>Status:</strong> <span id="gpType"></span></p>
-    <p><strong>Time:</strong> <span id="gpTime"></span></p>
-    <p><strong>Reason:</strong> <span id="gpReason"></span></p>
-    <p class="pass-id"><strong>Pass ID:</strong> <span id="gpId"></span></p>
-  </div>
+        <!-- MEAL AVAILABILITY -->
+        <div class="card meal-card">
+          <h3>Meal Availability</h3>
+          <div id="mealForm">
+            <div class="meal-row">
+              <span>Breakfast</span>
+              <div class="meal-toggle">
+                <button class="meal-btn" onclick="selectMeal(event,'breakfast','yes')">Yes</button>
+                <button class="meal-btn" onclick="selectMeal(event,'breakfast','no')">No</button>
+              </div>
+            </div>
+            <div class="meal-row">
+              <span>Lunch</span>
+              <div class="meal-toggle">
+                <button class="meal-btn" onclick="selectMeal(event,'lunch','yes')">Yes</button>
+                <button class="meal-btn" onclick="selectMeal(event,'lunch','no')">No</button>
+              </div>
+            </div>
+            <div class="meal-row">
+              <span>Dinner</span>
+              <div class="meal-toggle">
+                <button class="meal-btn" onclick="selectMeal(event,'dinner','yes')">Yes</button>
+                <button class="meal-btn" onclick="selectMeal(event,'dinner','no')">No</button>
+              </div>
+            </div>
+            <button class="submit-btn" onclick="submitMeal()">Submit</button>
+          </div>
 
-  <p class="gatepass-note">
-    Show this pass to the security
-  </p>
-  <button class="ok-btn" onclick="resetInOutForm()">
-  OK
-</button>
-
-</div>
-
-<div class="card meal-card">
-
-  <h3>Meal Availability</h3>
-
-  <!-- FORM -->
-  <div id="mealForm">
-    <div class="meal-row">
-      <span>Breakfast</span>
-      <div class="meal-toggle">
-        <button class="meal-btn" onclick="selectMeal('breakfast','yes')">Yes</button>
-        <button class="meal-btn" onclick="selectMeal('breakfast','no')">No</button>
-      </div>
-    </div>
-
-    <div class="meal-row">
-      <span>Lunch</span>
-      <div class="meal-toggle">
-        <button class="meal-btn" onclick="selectMeal('lunch','yes')">Yes</button>
-        <button class="meal-btn" onclick="selectMeal('lunch','no')">No</button>
-      </div>
-    </div>
-
-    <div class="meal-row">
-      <span>Dinner</span>
-      <div class="meal-toggle">
-        <button class="meal-btn" onclick="selectMeal('dinner','yes')">Yes</button>
-        <button class="meal-btn" onclick="selectMeal('dinner','no')">No</button>
-      </div>
-    </div>
-
-    <button class="submit-btn" onclick="submitMeal()">Submit</button>
-  </div>
-
-  <!-- MESSAGE (HIDDEN INITIALLY) -->
-  <div id="mealMessage" class="meal-message hidden">
-    <p>🌱 Your response helps reduce food wastage</p>
-    <p>📅 Submitted for today</p>
-    <p>🙏 Thank you</p>
-  </div>
-
-</div>
+          <div id="mealMessage" class="meal-message hidden">
+            <p>🌱 Your response helps reduce food wastage</p>
+            <p>📅 Submitted for today</p>
+            <p>🙏 Thank you</p>
+          </div>
+        </div>
 
       </div>
-
     </div>
 
   </section>
-
 </div>
 
 <script src="dashboard.js"></script>
-<!-- TOAST NOTIFICATION -->
 <div id="toast" class="toast hidden">
   ✅ Entry submitted successfully
 </div>
