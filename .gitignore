@@ -9,13 +9,25 @@ serviceAccountKey.json
 
 # Node
 node_modules/
-
-# Python
+# Ignore Python virtual environment
 venv/
+*.pyc
 __pycache__/
 
 # Environment files
 .env
+# Python
+venv/
+*.pyc
+__pycache__/
+
+# Node
+node_modules/
+
+# Optional: OS files
+.DS_Store
+Thumbs.db
+
 
 # Firebase
 serviceAccountKey.json
