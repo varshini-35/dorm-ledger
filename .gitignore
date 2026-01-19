@@ -35,3 +35,7 @@ firebase-debug.log
 
 # OS
 .DS_Store
+
+serviceAccountKey.json
+backend/serviceAccountKey.json
+
