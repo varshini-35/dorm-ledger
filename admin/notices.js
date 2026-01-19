@@ -26,7 +26,7 @@ function postNotice() {
 
   const sentTo =
     audience === "all"
-      ? "All Tenants"
+      ? "All Students"
       : `USN: ${usn || "-"} / Room: ${room || "-"}`;
 
   const notice = {
