@@ -1,28 +1,32 @@
-const ormText = "ORM";
-const ledgerText = "LEDGER";
+document.addEventListener("DOMContentLoaded", () => {
+  const ormText = "ORM";
+  const ledgerText = "LEDGER";
 
-let i = 0;
-let j = 0;
+  let i = 0;
+  let j = 0;
 
-const ormEl = document.getElementById("orm");
-const ledgerEl = document.getElementById("ledger");
+  const ormEl = document.getElementById("orm");
+  const ledgerEl = document.getElementById("ledger");
 
-setTimeout(typeORM, 2600);
+  if (!ormEl || !ledgerEl) return;
 
-function typeORM() {
-  ormEl.style.opacity = 1;
-  if (i < ormText.length) {
-    ormEl.textContent += ormText[i++];
-    setTimeout(typeORM, 180);
-  } else {
-    setTimeout(typeLedger, 400);
+  setTimeout(typeORM, 2600);
+
+  function typeORM() {
+    ormEl.style.opacity = 1;
+    if (i < ormText.length) {
+      ormEl.textContent += ormText[i++];
+      setTimeout(typeORM, 180);
+    } else {
+      setTimeout(typeLedger, 400);
+    }
   }
-}
 
-function typeLedger() {
-  ledgerEl.style.opacity = 1;
-  if (j < ledgerText.length) {
-    ledgerEl.textContent += ledgerText[j++];
-    setTimeout(typeLedger, 160);
+  function typeLedger() {
+    ledgerEl.style.opacity = 1;
+    if (j < ledgerText.length) {
+      ledgerEl.textContent += ledgerText[j++];
+      setTimeout(typeLedger, 160);
+    }
   }
-}
+});
