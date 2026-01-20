@@ -23,10 +23,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function typeLedger() {
-    ledgerEl.style.opacity = 1;
-    if (j < ledgerText.length) {
-      ledgerEl.textContent += ledgerText[j++];
-      setTimeout(typeLedger, 160);
-    }
+  ledgerEl.style.opacity = 1;
+  if (j < ledgerText.length) {
+    ledgerEl.textContent += ledgerText[j++];
+    setTimeout(typeLedger, 160);
+  } else {
+    setTimeout(() => {
+      window.location.href = "../login/login.html";
+    }, 1200); // redirect AFTER animation is visible
   }
+}
+
 });
