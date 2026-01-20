@@ -1,5 +1,7 @@
 # ml/ml_service.py
 
+import utils.transport
+import utils.session
 import numpy as np
 from sklearn.linear_model import LinearRegression
 
